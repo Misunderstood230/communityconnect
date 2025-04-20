@@ -140,33 +140,45 @@
                 <button type="submit" class="btn btn-primary">Upload</button>
             </form>
         </div>
+<!-- Recent Feedback -->
+<h4 class="mt-4 mb-3 text-primary border-bottom pb-2">Recent Feedback</h4>
 
-        <!-- Recent Feedback -->
-        <h4 class="mt-4">Recent Feedback</h4>
-        <div class="resource-item space-y-4">
-            {% if feedback %}
-            {% for feed in feedback %}
-                <div class="p-4 bg-white shadow rounded">
-                    <p class="text-blue-900 font-semibold">{{ feed.usser.name }}</p>
-                    <p class="text-gray-700 italic">"{{ feed.description }}"</p>
-                    <!-- Star Rating Display -->
-                    <div class="mt-2">
-                        {% for i in "12345" %}
-                            {% if forloop.counter <= feed.rating %}
-                                <span class="star filled">★</span>
-                            {% else %}
-                                <span class="star">★</span>
-                            {% endif %}
-                        {% endfor %}
-                        <small class="text-muted">({{ feed.rating }})</small>
+<div class="row">
+    {% if feedback %}
+        {% for feed in feedback %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100 p-3">
+                    <div class="row align-items-start">
+                        <!-- Left Side: Name and Description -->
+                        <div class="col-8">
+                            <h5 class="text-primary fw-bold fs-5 mb-2">{{ feed.usser.name }}</h5>
+                            <p class="text-dark fst-italic fs-6">"{{ feed.description }}"</p>
+                        </div>
+
+                        <!-- Right Side: Stars and Date -->
+                        <div class="col-4 text-end">
+                            <div class="mb-2 fs-5">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= feed.rating %}
+                                        <span class="text-warning">&#9733;</span> <!-- filled star -->
+                                    {% else %}
+                                        <span class="text-secondary">&#9734;</span> <!-- empty star -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <p class="text-muted small">{{ feed.created_at }}</p>
+                        </div>
                     </div>
-                    <small class="text-gray-400 block">{{ feed.created_at }}</small>
                 </div>
-            {% endfor %}
-            {% else %}
-                <strong>No ratings yet</strong>
-            {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12 text-center">
+            <strong class="text-muted">No ratings yet</strong>
         </div>
+    {% endif %}
+</div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

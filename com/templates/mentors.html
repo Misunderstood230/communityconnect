@@ -164,32 +164,49 @@
   </div>
 
   <!-- Feedback -->
-  <div class="section-card mt-5">
-    <h4 class="feedback-section">💬 Recent Feedback</h4>
+<div class="section-card mt-5">
+  <h4 class="feedback-section text-success border-bottom pb-2 mb-4">💬 Recent Feedback</h4>
+
+  <div class="row">
     {% if feedback %}
       {% for feed in feedback %}
-        <div class="mb-4 feedback-card">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div class="feedback-user">{{ feed.usser.name }}</div>
-            <div class="feedback-stars">
-              {% for i in "12345" %}
-                {% if forloop.counter <= feed.rating %}
-                  <span class="star">&#9733;</span> {# Filled Star #}
-                {% else %}
-                  <span class="star text-muted">&#9733;</span> {# Empty Star #}
-                {% endif %}
-              {% endfor %}
-              <small class="text-muted ms-1">({{ feed.rating }})</small>
+        <div class="col-md-6 mb-4">
+          <div class="p-4 border rounded shadow-sm bg-white h-100">
+            <div class="row justify-content-between align-items-start">
+              
+              <!-- Left: Name and Description -->
+              <div class="col-8">
+                <h5 class="feedback-user fw-bold fs-5 text-success mb-1">{{ feed.usser.name }}</h5>
+                <p class="mt-2 mb-1 fs-6 fst-italic text-primary">"{{ feed.description }}"</p>
+              </div>
+
+              <!-- Right: Stars and Date -->
+              <div class="col-4 text-end">
+                <div class="feedback-stars fs-5 mb-2">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= feed.rating %}
+                      <span class="star text-warning">&#9733;</span> {# Filled Star #}
+                    {% else %}
+                      <span class="star text-muted">&#9733;</span> {# Empty Star #}
+                    {% endif %}
+                  {% endfor %}
+                  <small class="text-muted ms-1">({{ feed.rating }})</small>
+                </div>
+                <small class="feedback-date text-muted">{{ feed.created_at }}</small>
+              </div>
+
             </div>
           </div>
-          <small class="feedback-date">{{ feed.created_at }}</small>
-          <p class="mt-2 mb-0 text-dark">"{{ feed.description }}"</p>
         </div>
       {% endfor %}
     {% else %}
-      <p>No feedback available.</p>
+      <div class="col-12 text-center">
+        <p class="text-muted fst-italic">No feedback available.</p>
+      </div>
     {% endif %}
   </div>
+</div>
+
 
 </div>
 

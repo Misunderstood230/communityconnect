@@ -158,14 +158,27 @@
             background-color: var(--danger-dark);
         }
         
-        .btn-back {
-            background-color: var(--gray);
+        .back-btn {
+            display: block;
+            width: 150px;
+            margin: 30px auto 10px;
+            padding: 12px;
+            background-color: #555;
             color: white;
-            margin-top: 30px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
-        .btn-back:hover {
-            background-color: var(--dark);
+        .back-btn:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
         
         .badge {
@@ -279,11 +292,9 @@
         </div>
     {% endif %}
 
-    <button onclick="history.back()" class="btn btn-back">← Back to Dashboard</button>
+    <button onclick="window.location.href='/adminhome/'" class="back-btn">← Back</button>
+
     
-    <div class="footer">
-        <p>User Management System © 2025</p>
-    </div>
 </div>
 
 </body>
