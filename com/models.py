@@ -253,7 +253,7 @@ class Like(models.Model):
         
 class Feedback(models.Model):
     description=models.TextField(max_length=50)
-    rating=models.IntegerField(max_length=5)
+    rating=models.IntegerField()
     usser=models.ForeignKey(Reg,on_delete=models.CASCADE,null=True,blank=True)
     choice=models.CharField(max_length=50,null=True,blank=True)
     created_at= models.DateTimeField(auto_now=True)

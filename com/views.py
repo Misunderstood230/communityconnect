@@ -377,6 +377,7 @@ def is_strong_password(password):
     )
 
 def moderator(request):
+    
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -622,8 +623,9 @@ def mentors(request):
     ).count()
     feedback= Feedback.objects.filter(choice='mentors and experts').order_by('-created_at')[:5]
     average_rating = Feedback.objects.filter(choice='mentors and experts').aggregate(Avg('rating'))['rating__avg']
-    if average_rating is None:
-        average_rating= "N/A"
+    average_rating = round(average_rating, 1) if average_rating is not None else "N/A"
+    
+    
     return render(request, 'mentors.html', {
         'active_mentees': active_mentees,
         'support_sessions_completed': support_sessions_completed,
@@ -655,9 +657,10 @@ def sponsors(request):
     completed_donations = Request.objects.filter(mod=mode,status='COMPLETED').count()
     feedback= Feedback.objects.filter(choice='sponsors or donors').order_by('-created_at')[:5]
     average_rating = Feedback.objects.filter(choice='sponsors or donors').aggregate(Avg('rating'))['rating__avg']
-    if average_rating is None:
-        average_rating= "N/A"
+    average_rating = round(average_rating, 1) if average_rating is not None else "N/A"
+    
     print('dd',completed_donations)
+    
     return render(request, 'sponsors.html', {
         'obj': obj,
         'total_donors': total_donors,
@@ -669,9 +672,10 @@ def sponsors(request):
 
 
 
+
 from django.shortcuts import render, redirect
-from django.utils import timezone
-from .models import Mod, CreativeContent
+from django.db.models import Avg
+from .models import Mod, CreativeContent, Feedback
 
 def creators(request):
     if 'email' not in request.session: 
@@ -685,32 +689,30 @@ def creators(request):
 
     # Group 1: Videos and Files
     video_file_count = CreativeContent.objects.filter(
-        content_type__in=['video', 'file','other']
+        content_type__in=['video', 'file', 'other']
     ).count()
 
     # Group 2: Thoughts, Research, and Articles
     text_based_count = CreativeContent.objects.filter(
         content_type__in=['thought', 'research', 'article']
     ).count()
-    feedback= Feedback.objects.filter(choice='creators and sharers').order_by('-created_at')[:5]
-    average_rating = Feedback.objects.filter(choice='creators and sharers').aggregate(Avg('rating'))['rating__avg']
 
-    # Average rating (make sure your model has a 'rating' field)
-    # average_rating = CreativeContent.objects.aggregate(
-    #     avg_rating=Avg('rating')
-    # )['avg_rating'] or 0
+    # Recent feedback
+    feedback = Feedback.objects.filter(choice='creators and sharers').order_by('-created_at')[:5]
+
+    # Average rating rounded to 1 decimal place
+    average_rating = Feedback.objects.filter(choice='creators and sharers').aggregate(Avg('rating'))['rating__avg']
+    average_rating = round(average_rating, 1) if average_rating is not None else "N/A"
 
     return render(request, 'creators.html', {
         'active_creators': active_creators,
         'video_file_count': video_file_count,
         'text_based_count': text_based_count,
-        'feedback' : feedback,
-        'feedbackc': average_rating 
+        'feedback': feedback,
+        'feedbackc': average_rating
     })
- 
+    
 
-
-# Blood compatibility mapping
 BLOOD_COMPATIBILITY = {
     'O-': ['O-', 'O+', 'A-', 'A+', 'B-', 'B+', 'AB-', 'AB+'],
     'O+': ['O+', 'A+', 'B+', 'AB+'],
