@@ -64,10 +64,37 @@
 
     .star {
       font-size: 1.2rem;
-      color: #ccc;
+      color: #f0f41b;
   }
   .star.filled {
       color: #f7c948; /* Bootstrap-like yellow */
+  }
+   .feedback-section h4 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #004d40;
+  }
+  .feedback-card {
+    padding: 20px;
+    background-color: #e0f2f1;
+    border-radius: 12px;
+    font-size: 1.1rem;
+  }
+  .feedback-stars {
+    font-size: 1.5rem;
+    color: #fbc02d;
+  }
+  .feedback-stars .star {
+    margin-right: 2px;
+  }
+  .feedback-user {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #00695c;
+  }
+  .feedback-date {
+    font-size: 0.9rem;
+    color: #777;
   }
   </style>
 </head>
@@ -137,33 +164,32 @@
   </div>
 
   <!-- Feedback -->
-  <div class="section-card mt-4">
-    <h4>💬 Recent Feedback</h4>
+  <div class="section-card mt-5">
+    <h4 class="feedback-section">💬 Recent Feedback</h4>
     {% if feedback %}
-    {% for feed in feedback%}
-    <div class="mb-3 p-3 bg-light rounded">
-      <div class="d-flex justify-content-between">
-        <strong>{{ feed.usser.name }}</strong>
-        <div class="mt-2">
-          {% for i in "12345" %}
-              {% if forloop.counter <= feed.rating %}
-                  <span class="star filled">&#9733;</span>
-              {% else %}
-                  <span class="star">&#9733;</span>
-              {% endif %}
-          {% endfor %}
-          <small class="text-muted">({{ feed.rating }})</small>
-      </div>
-        <small class="text-muted">{{ feed.created_at}}</small>
-      </div>
-      <p class="mb-0">"{{ feed.description }}"</p>
-    </div>
-    {% endfor %}
+      {% for feed in feedback %}
+        <div class="mb-4 feedback-card">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="feedback-user">{{ feed.usser.name }}</div>
+            <div class="feedback-stars">
+              {% for i in "12345" %}
+                {% if forloop.counter <= feed.rating %}
+                  <span class="star">&#9733;</span> {# Filled Star #}
+                {% else %}
+                  <span class="star text-muted">&#9733;</span> {# Empty Star #}
+                {% endif %}
+              {% endfor %}
+              <small class="text-muted ms-1">({{ feed.rating }})</small>
+            </div>
+          </div>
+          <small class="feedback-date">{{ feed.created_at }}</small>
+          <p class="mt-2 mb-0 text-dark">"{{ feed.description }}"</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No feedback available.</p>
+    {% endif %}
   </div>
-</div>
-{% else %}
-<strong>No ratings yet</strong>
-{% endif %}
 
 </div>
 
