@@ -119,18 +119,37 @@
         .error h2 {
             color: #e93f1a;
         }
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .button-row button,
+        .button-row .back-button {
+            margin: 0;
+            flex: 0 0 auto;
+        }
+        
     </style>
 </head>
 <body>
     <h1>Contact Us</h1>
+    <p>If you have any questions or feedback, feel free to reach out!</p>
+    
     <form method="POST">
         {% csrf_token %}
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
         <textarea name="message" placeholder="Your Message" required></textarea>
-        <button type="submit">Send</button>
+        
+        <div class="button-row">
+            <button type="submit">Send</button>
+            <a href="javascript:history.back()" class="back-button">Back</a>
+        </div>
     </form>
-    <a href="javascript:history.back()" class="back-button">Back</a>
+
 
     <!-- Modal -->
     <div id="myModal" class="modal">
