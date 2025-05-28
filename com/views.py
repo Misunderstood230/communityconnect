@@ -1983,13 +1983,16 @@ def Addfeedback(request):
         rating=request.POST.get('rating')
 
         if not feedback or not rating or not feedback:
+            
             alert="<script>alert('All fields are required.'); window.location.href='/Addfeedback/';</script>"
             return HttpResponse(alert)
 
         try:
             Feedback.objects.create(choice=choice, rating=rating, description=feedback,usser=use)
+            
             alert="<script>alert('Feedback submitted successfully'); window.location.href='/userhome/';</script>"
             return HttpResponse(alert)
+        
         except Exception as e:
             messages.error(request, f"An error occurred: {str(e)}")
             return redirect('Addfeedback')
